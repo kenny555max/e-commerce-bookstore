@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from 'react-router-dom';
 import { signup } from "../actions";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 
 const Signup = () => {
     const [form_data, set_form_data] = useState({
@@ -11,6 +12,8 @@ const Signup = () => {
         confirm_password: '',
         type: ''
     });
+    const message = useSelector((state) => state.userReducer.message);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const onChange = (e) => {
@@ -24,9 +27,7 @@ const Signup = () => {
 
         if (username === '' || email === '' || confirm_password === '' || password === '') return;
 
-        // console.log(form_data);
-
-        signup(form_data, navigate);
+        dispatch(signup(form_data, navigate));
     }
 
     return (
@@ -36,6 +37,9 @@ const Signup = () => {
                     <h2>Sign Up</h2>
                 </div>
                 <form onSubmit={onSubmit}>
+                    {message !== '' && (
+                        <p>{message}</p>
+                    )}
                     <div className="username">
                         <input type="text" value={form_data.username} name="username" onChange={onChange} placeholder="Enter Username......" />
                     </div>

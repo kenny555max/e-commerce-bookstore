@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import { signin } from "../actions";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { error_status } from "../reducers/userReducer";
 
 
 const Login = () => {
@@ -10,10 +12,18 @@ const Login = () => {
         password: ''
     });
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const message = useSelector((state) => state.userReducer.message)
     const onChange = (e) => {
         set_form_data({ ...form_data, [e.target.name]: e.target.value });
     }
+
+    useEffect(() => {
+        setTimeout(() => {
+            dispatch(error_status(""));
+        },2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[message]);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -22,7 +32,7 @@ const Login = () => {
 
         if (email === '' || password === '') return;
 
-        signin(form_data, navigate);
+        dispatch(signin(form_data, navigate));
     }
 
     return (
@@ -31,7 +41,10 @@ const Login = () => {
                 <div className="title">
                     <h2>LogIn</h2>
                 </div>
-                    <form onSubmit={onSubmit}>
+                <form onSubmit={onSubmit}>
+                    {message !== '' && (
+                        <p>{message}</p>
+                    )}
                     <div className="email">
                             <input type="email" value={form_data.email} name="email" onChange={onChange}  placeholder="Enter Email........" />
                         </div>

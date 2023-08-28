@@ -18,17 +18,18 @@ const Cart = ({ product }) => {
     return (
         <div className="card">
             <div className="card_img">
-                <div className="overlay_price">{product.price}</div>
+                <div className="overlay_price" style={{ backgroundColor: 'red', cursor: 'pointer' }} onClick={() => remove_item(product._id)}>x</div>
                 <img height='100%' width='100%' src={product.src} alt="product" />
             </div>
             <div className="card_action">
                 <h5>{product.name}</h5>
-                <div className='update' style={{ display: 'flex' }}>
-                    <input style={{ flex: 0.7 }} type="number" value={qty} onChange={(e) => set_qty(e.target.value)} />
-                    <button onClick={() => update_item(product._id)} style={{ flex: 0.3 }}>update</button>
+                <h2 style={{ color: 'darkred' }}>${product.price}/-</h2>
+                <div className='update' style={{ display: 'flex'}}>
+                    <input type="number" style={{display: 'block'}} value={qty} onChange={(e) => set_qty(e.target.value)} />
+                    <button style={{display: 'block'}} onClick={() => update_item(product._id)}>update</button>
                 </div>
                 <div className='remove'>
-                    <button style={{ backgroundColor: 'red' }} onClick={() => remove_item(product._id)}>remove</button>
+                    <h3>Sub Total: <span style={{color: 'darkred'}}>${product.price * product.quantity}/-</span></h3>
                 </div>
             </div>
         </div>

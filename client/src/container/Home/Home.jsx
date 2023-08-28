@@ -1,20 +1,25 @@
-import Header from '../../components/Headers/Header'
-import Banner from '../../components/Banner/Banner'
+import { lazy, Suspense } from 'react';
 
-import About from '../../components/About/About';
-import Footer from '../../components/Footer/Footer';
-import Products from '../../components/Products/Products';
+const Header = lazy(() => import("../../components/Headers/Header"));
+const Footer = lazy(() => import("../../components/Footer/Footer"));
+const Products = lazy(() => import("../../components/Products/Products"));
+const Banner = lazy(() => import('../../components/Banner/Banner'));
+const About = lazy(() => import('../../components/About/About'));
+const Question = lazy(() => import('../../components/question/Question'));
 
 
 const Home = () => {
   return (
-    <>
-        <Header />
-        <Banner />
+    <Suspense fallback={<div>Loading............</div>}>
+      <Header />
+      <Banner />
+      <div className="container_product_about">
         <Products />
         <About />
-        <Footer />
-    </>
+      </div>
+      <Question />
+      <Footer />
+    </Suspense>
   )
 }
 

@@ -6,8 +6,11 @@ import Product_model from './models/products.js';
 import data from './data.js';
 import products from './routes/product.js';
 import cartRoute from './routes/cart.js';
+import dotenv from 'dotenv';
+import orderRoute from './routes/order.js';
 
 const app = express();
+dotenv.config();
 
 //middleware
 app.use(express.urlencoded({ extended: true }));
@@ -26,18 +29,14 @@ const add_products = async () => {
 
 //add_products();
 
-//route
-app.get('/', (req, res) => {
-    res.send('Hellow World!');
-});
-
 app.use('/users', routes);
 app.use('/products', products);
 app.use('/cart', cartRoute);
+app.use('/order', orderRoute);
 
-const CONNECTION_URI = 'mongodb+srv://bookstore:mongodb@cluster0.vufqv.mongodb.net/?retryWrites=true&w=majority';
+const CONNECTION_URI = process.env.CONNECTION_URI;
 
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 mongoose.connect(CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => app.listen((PORT), () => console.log(`Server listening on PORT ${PORT}`)))

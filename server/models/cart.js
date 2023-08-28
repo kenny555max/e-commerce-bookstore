@@ -10,7 +10,8 @@ const cart_schema = new mongoose.Schema({
     category: String,
     src: String,
     productId: String,
-    quantity: Number
+    quantity: Number,
+    userId: String
 });
 
 const cart_model = mongoose.model('carts', cart_schema);

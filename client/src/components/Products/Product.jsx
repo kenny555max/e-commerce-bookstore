@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const Product = ({ product }) => {
     const [qty, set_qty] = useState(1);
     const carts = useSelector((state) => state.productReducer.carts);
+    const result = JSON.parse(localStorage.getItem('result'))?.data;
     const dispatch = useDispatch();
     const product_added = useMemo(() => {
         return carts.filter((cart) => cart.productId === product._id);
@@ -13,7 +14,9 @@ const Product = ({ product }) => {
     }, [carts]);
 
     const add_to_cart = (event, product) => {
-        dispatch(add_product_to_cart({ ...product, quantity: qty }));
+        const { name, color, price, category, src, _id } = product;
+
+        dispatch(add_product_to_cart({ name, color, price, src, category, productId: _id, quantity: qty, userId: result._id }));
     }
 
     return (
@@ -25,11 +28,11 @@ const Product = ({ product }) => {
                 </div>
                 <div className="card_action">
                     <h5>{product.name}</h5>
+                    <input type="number" value={product_added.length > 0 ? product.quantity : qty} onChange={(e) => set_qty(e.target.value)} />
                     {product_added.length > 0 ? (
                         <button disabled style={{ backgroundColor: 'green' }}>In Cart</button>
                     ) : (
                         <>
-                            <input type="number" value={qty} onChange={(e) => set_qty(e.target.value)} />
                             <button onClick={(event) => add_to_cart(event, product)}>Add To Cart</button>
                         </>
                     )}

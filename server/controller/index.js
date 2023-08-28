@@ -1,5 +1,10 @@
 import bcrypjs from 'bcryptjs';
 import UserModel from '../models/index.js';
+import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const signup = async (req, res) => {
     try {
@@ -15,11 +20,42 @@ export const signup = async (req, res) => {
 
         const hash_password = bcrypjs.hashSync(password, 10);
 
-        const users = await UserModel.create({ username, email, password: hash_password });
+        const result = await UserModel.create({ username, email, password: hash_password });
 
-        console.log(users);
+        const token = jwt.sign({ id: result._id, email: result.email }, process.env.SECRET, { expiresIn: '1h' });
+        const encodedToken = btoa(token); // Encode the token using btoa
+        const verificationUrl = `http://localhost:3000/email_verification/${encodedToken}`;
 
-        res.status(200).json({ data: users });
+        // Create a Nodemailer transporter
+        const transporter = nodemailer.createTransport({
+            host: "smtp.forwardemail.net",
+            port: 465,
+            secure: true,
+            service: 'Gmail', // e.g., 'Gmail'
+            auth: {
+                user: 'oyedepokehinde2016@gmail.com',
+                pass: process.env.GMAIL_APP_PASSWORD,
+            },
+        });
+
+        // Compose the email
+        const mailOptions = {
+            from: 'oyedepokehinde2016@gmail.com',
+            to: result.email,
+            subject: 'Email Verification',
+            html: `<p>Hello ${result.username}, please click <a href="${verificationUrl}">here</a> to validate your account.</p>`,
+        };
+
+        // Send the email
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ msg: 'Error sending validation email' })
+            } else {
+                console.log('Email sent: ' + info.response);
+                res.status(200).json({ msg: `User registered successfully. Check your email for validation instructions. ${result.email}` });
+            }
+        });
     } catch (error) {
         console.log(error);
     }
@@ -32,19 +68,42 @@ export const signin = async (req, res) => {
         const { email, password } = req.body;
 
         //check to see if the user's data already in the database
-        const user = await UserModel.findOne({ email });
+        const result = await UserModel.findOne({ email });
 
-        if (!user) return res.status(400).json({ mesg: `The user's email is not in our database ${email}` });
+        if (!result) return res.status(400).json({ msg: `The user's email is not in our database ${email}` });
 
         //check to see if the entered password matches the password from the db
-        const hash = user.password; //the password from the database
+        const hash = result.password; //the password from the database
 
         const password_true = bcrypjs.compareSync(password, hash);
 
         if (!password_true) return res.status(400).json({ msg: `Password incorrect!` });
 
-        res.status(200).json({ data: user });
+        const token = jwt.sign({ id: result._id, email: result.email }, process.env.SECRET, { expiresIn: '1h' });
+
+        res.status(200).json({ data: result, token });
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const verify_email = async (req, res) => {
+    const token = req.params.token;
+
+    try {
+        const decodedToken = jwt.verify(token, 'secret');
+
+        // Check if token has expired
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (decodedToken.exp < currentTime) return res.status(400).json({ msg: 'Expired token' });
+
+        // Use the decodedToken to verify and update user status
+        // For example, set user's status to "verified" in the database
+        const result = await UserModel.findByIdAndUpdate(decodedToken?.id, { status: 'verified', token });
+
+        return res.json({ msg: 'Email successfully verified', data: result, token });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ msg: 'Invalid or expired token' });
     }
 }

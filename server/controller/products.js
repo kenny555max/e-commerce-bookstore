@@ -12,6 +12,10 @@ export const all_products = async (req, res) => {
 
 export const search_for_an_item = async (req, res) => {
     try {
+        console.log(req.id);
+
+        if (!req.id) return res.status(401).json({ msg: 'Unauthorized' });
+
         const searchQuery = new RegExp(req.query.search, "i");
 
         const products = await Product_model.find({

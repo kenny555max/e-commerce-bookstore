@@ -1,35 +1,21 @@
-import { Link } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 
-import about from '../../assets/banner.jpg';
-import Header from '../../components/Headers/Header';
-import Products from '../../components/Products/Products';
-import Footer from '../../components/Footer/Footer';
+const Header = lazy(() => import("../../components/Headers/Header"));
+const Footer = lazy(() => import("../../components/Footer/Footer"));
+const Products = lazy(() => import("../../components/Products/Products"));
+const Mini_Banner = lazy(() => import("../../components/Mini_Banner/Mini_Banner"));
 
 const Shop = () => {
     return (
         <div className='shop'>
-            <Header />
-            <div className='about_banner' style={{
-              fontFamily: 'sans-serif',
-              backgroundImage: `url(${about})`,
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column',
-              height: '200px',
-              justifyContent: 'center',
-              lineHeight: '1.5',
-              backgroundPosition: 'center',
-              backgroundSize: 'cover',
-              marginBottom: '40px'
-            }}>
-                <h1>Our Shop</h1>
-                <div>
-                    <Link to='/products'>home / </Link>
-                    <Link to='/shop'>shop</Link>  
+            <Suspense fallback={<div>Loading........</div>}>
+                <Header />
+                <Mini_Banner title='Our Shop' link='shop' />
+                <div className="container_product_about">
+                    <Products />
                 </div>
-            </div>
-            <Products />
-            <Footer />
+                <Footer />
+            </Suspense>
         </div>
     )
 }

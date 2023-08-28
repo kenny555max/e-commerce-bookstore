@@ -5,15 +5,11 @@ import { all_products } from '../../actions';
 
 import Product from './Product';
 
-import './Products.css';
 import { useEffect, useState } from 'react';
-//import { useNavigate, useLocation } from 'react-router-dom';
 
 const Products = () => {
     const dispatch = useDispatch();
     const [limit, set_limit] = useState(10);
-    //const navigate = useNavigate();
-    //const location = useLocation();
     const { isLoading, error } = useQuery({
         queryKey: ['home'],
         queryFn: () => dispatch(all_products(limit)),
@@ -23,7 +19,7 @@ const Products = () => {
 
     useEffect(() => {
         dispatch(all_products(limit));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[limit]);
 
     if (isLoading) return <h3>Loading...</h3>
@@ -44,28 +40,26 @@ const Products = () => {
     }
 
     const load_more = () => {
-        set_limit((prev_limit) => prev_limit + 10);
+        set_limit((limit) => limit + 10);
 
         //navigate(`${location.pathname}?_limit=${limit}`);
-    }
+    };
     
     return (
         <div className='products'>
-            <div className="container">
-                <div className="title">
-                    <h1>Products</h1>
-                </div>
-                <div className="display_products">
-                    {products.map((product, index) => {
-                        return <Product key={index} product={product} />
-                    })}
-                </div>
-                <div className="load_more">
-                    <button onClick={load_more}>load more</button>
-                </div>
+            <div className="title">
+                <h1>Products</h1>
+            </div>
+            <div className="display_products">
+                {products.map((product, index) => {
+                    return <Product key={index} product={product} />
+                })}
+            </div>
+            <div className="load_more">
+                <button onClick={load_more}>load more</button>
             </div>
         </div>
     )
 }
 
-export default Products
+export default Products;

@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { search_item } from "../../actions";
 import Product from "../Products/Product";
 
-import '../Products/Products.css';
-
 const Search = () => {
     const navigate = useNavigate();
     const [search, set_search] = useState('');
@@ -22,7 +20,7 @@ const Search = () => {
 
     return (
         <div className="search_for_products">
-            <div className="container" style={{ width: '80%', margin: '0 auto' }}>
+            <div className="container" style={{ width: '80%', margin: '0 auto', padding: '50px 0' }}>
                 <div style={{ display: "flex" }} >
                     <div className="input" style={{ flex: "1" }}>
                         <input type="search" value={search} onChange={(e) => set_search(e.target.value)} placeholder="search products................" />

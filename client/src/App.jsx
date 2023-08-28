@@ -1,32 +1,44 @@
-import { Routes, Route } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { Suspense, useEffect, useState } from 'react';
 
-//import App.css
+import { AuthComponents, Components } from './index';
+
 import './App.css';
-const About_Page = lazy(() => import('./container/About_Page/About_Page'));
-const Shop = lazy(() => import('./container/Shop/Shop'));
-const Home = lazy(() => import('./container/Home/Home'));
-const Contact = lazy(() => import('./container/Contact_Page/Contact_Page'));
-const Search = lazy(() => import('./container/Search_Page/Search_Page'));
-const Cart = lazy(() => import('./container/Cart_Page/Cart_Page'));
-const Signup = lazy(() => import("./components/Signup"));
-const Login = lazy(() => import("./components/Login"));
 
 const App = () => {
+  const [userDataAvailable, setUserDataAvailable] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+ useEffect(() => {
+    const userData = localStorage.getItem('result');
+    if (userData) {
+      setUserDataAvailable(true);
+    }
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <div>Loading............</div>;
+  }
+
   return (
-      <Suspense fallback={<div>Loading............</div>}>
-        <Routes>
-          <Route path="/" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path='/about' element={<About_Page />} />
-          <Route path='/shop' element={<Shop />} />
-          <Route path='/contact' element={<Contact />} />
-          <Route path='/search' element={<Search />} />
-          <Route path='/cart' element={<Cart />} />
-        </Routes>
-      </Suspense>
-  )
+    <Suspense fallback={<div>Loading............</div>}>
+      <Routes>
+        <Route path="/" element={userDataAvailable ? <Navigate to="/home" /> : <AuthComponents.Signup />} />
+        <Route path="/login" element={<AuthComponents.Login />} />
+        <Route path="/home" element={!userDataAvailable ? <Navigate to="/" /> : <Components.Home />} />
+        <Route path='/about' element={<Components.About_Page />} />
+        <Route path='/shop' element={<Components.Shop />} />
+        <Route path='/contact' element={<Components.Contact />} />
+        <Route path='/search' element={<Components.Search />} />
+        <Route path='/cart' element={<Components.Cart />} />
+        <Route path='/email_verification_message' element={<Components.Email_Verification_Message />} />
+        <Route path='/email_verification/:token' element={<Components.Email_Verification />} />
+        <Route path='/checkout' element={<Components.Checkout />} />
+        <Route path='/orders' element={<Components.Orders_Page />} />
+      </Routes>
+    </Suspense>
+  );
 }
 
 export default App;

@@ -35,6 +35,12 @@ export const productSlice = createSlice({
         },
         searched_items: (state, action) => {
             return { ...state, search_items: action.payload.data, message: action.payload.msg }
+        },
+        product_error_status: (state, action) => {
+            return { ...state, message: action.payload }
+        },
+        order_placed: (state, action) => {
+            return { ...state, message: action.payload.msg }
         }
     },
 });
@@ -48,7 +54,9 @@ export const {
     remove_item,
     update_item,
     clear_message,
-    searched_items
+    searched_items,
+    product_error_status,
+    order_placed
 } = productSlice.actions;
 
 export default productSlice.reducer;

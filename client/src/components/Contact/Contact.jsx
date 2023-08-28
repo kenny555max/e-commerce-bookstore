@@ -1,10 +1,7 @@
 
 const Contact = () => {
     return (
-        <div className='contact' style={{ 
-            width: '30%',
-            margin: '0 auto'
-         }}>
+        <div className='contact'>
             <h1 style={{ textAlign: 'center' }}>SAY SOMETHING</h1>
             <form>
                 <div className="name">
