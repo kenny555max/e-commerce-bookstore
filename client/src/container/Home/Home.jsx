@@ -5,7 +5,7 @@ const Footer = lazy(() => import("../../components/Footer/Footer"));
 const Products = lazy(() => import("../../components/Products/Products"));
 const Banner = lazy(() => import('../../components/Banner/Banner'));
 const About = lazy(() => import('../../components/About/About'));
-const Question = lazy(() => import('../../components/question/Question'));
+const Question = lazy(() => import('../../components/Question/Question'));
 
 
 const Home = () => {
