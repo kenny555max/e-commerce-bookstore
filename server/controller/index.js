@@ -24,7 +24,7 @@ export const signup = async (req, res) => {
 
         const token = jwt.sign({ id: result._id, email: result.email }, process.env.SECRET, { expiresIn: '1h' });
         const encodedToken = btoa(token); // Encode the token using btoa
-        const verificationUrl = `http://localhost:3000/email_verification/${encodedToken}`;
+        const verificationUrl = `https://e-commerce-bookstore-tau.vercel.app/email_verification/${encodedToken}`;
 
         // Create a Nodemailer transporter
         const transporter = nodemailer.createTransport({
