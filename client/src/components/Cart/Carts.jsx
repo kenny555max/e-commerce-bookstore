@@ -10,7 +10,7 @@ const Carts = () => {
   const grand_total = useMemo(() => {
     return carts.reduce((arr, cur) => arr += (cur.price * cur.quantity) ,0);
   },[carts]);
-  const userId = JSON.parse(localStorage.getItem('result'))?.data._id;
+  const userId = JSON.parse(localStorage.getItem('result'))?.result._id;
   const empty_cart = (userid) => {
     if (carts.length === 0) {
       alert("No item in the cart");

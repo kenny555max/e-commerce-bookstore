@@ -4,7 +4,7 @@ import { place_order } from "../../actions";
 
 const Order = () => {
     const carts = useSelector((state) => state.productReducer.carts);
-    const data = JSON.parse(localStorage.getItem('result'))?.data;
+    const data = JSON.parse(localStorage.getItem('result'))?.result;
     const dispatch = useDispatch();
     const grand_total = useMemo(() => {
         return carts.reduce((arr, cur) => arr += (cur.price * cur.quantity) ,0);
@@ -36,7 +36,7 @@ const Order = () => {
             ...form_data,
             userId: data._id,
             total_price: grand_total,
-            your_orders: [...carts.map(cart => cart.name)]
+            your_orders: [...carts.map(cart => cart)]
         }));
 
         set_form_data({

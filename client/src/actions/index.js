@@ -8,9 +8,11 @@ import {
     update_item,
     searched_items,
     product_error_status,
-    order_placed
+    order_placed,
+    payment_verfied
 } from '../reducers/productReducer';
 import { register, login, register_status, logout_user, error_status } from '../reducers/userReducer';
+
 
 export const logout = (navigate) => (dispatch) => {
     dispatch(logout_user());
@@ -177,8 +179,6 @@ export const search_item = (search_value) => async (dispatch) => {
 export const place_order = (order_data) => async (dispatch) => {
     try {
         const { data } = await api.place_order(order_data);
-
-        console.log(data);
         
         dispatch(order_placed(data));
     } catch (error) {
@@ -195,8 +195,6 @@ export const get_order = () => async (dispatch) => {
     try {
         const { data } = await api.get_order();
 
-        console.log(data);
-
         return data;
     } catch (error) {
         console.log(error);
@@ -207,3 +205,46 @@ export const get_order = () => async (dispatch) => {
         }
     }
 }
+
+export const checkout_session = () => async (dispatch) => {
+    try {
+        const { data } = await api.create_checkout_session();
+
+        window.location = `${data.url}`;
+    } catch (error) {
+        if (error.response.data.msg) {
+            dispatch(product_error_status(error.response.data.msg));
+        } else {
+            dispatch(product_error_status('Internal Server Error'));
+        }
+    }
+}
+
+export const confirm_payment_status = (payment_status) => async (dispatch) => {
+    try {
+        console.log(payment_status)
+        if (payment_status === 'failed') {
+            throw new Error('Payment failed');
+        }
+
+        const { data } = await api.verify_payment_status(payment_status);
+
+        console.log(data);
+
+        dispatch(payment_verfied(data));
+    } catch (error) {
+        console.log(error);
+        if (error === 'Payment failed') {
+            // Dispatch an error message when payment_status is 'failed' or if there's an exception.
+            dispatch(product_error_status("Payment canceled -- continue to shop around and checkout when you're ready."));
+        } else if (error.response.data.msg) {
+            dispatch(product_error_status(error.response.data.msg));
+        } else {
+            dispatch(product_error_status('Internal Server Error'));
+        }
+    }
+}
+
+
+
+

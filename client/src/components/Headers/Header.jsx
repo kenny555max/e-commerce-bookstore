@@ -10,7 +10,7 @@ import decode from 'jwt-decode';
 const Header = () => {
     const dispatch = useDispatch();
     const { carts, message } = useSelector((state) => state.productReducer);
-    const { token, data } = JSON.parse(localStorage.getItem('result'));
+    const result = JSON.parse(localStorage.getItem('result'));
     const location = useLocation();
     const [show_profile, set_show_profile] = useState(false);
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Header = () => {
     },[location]);
 
     const checkTokenExpiration = () => {
-        const decodedToken = decode(token);
+        const decodedToken = decode(result?.result.accessToken);
 
         // Check if token has expired
         const currentTime = Math.floor(Date.now() / 1000);
@@ -89,8 +89,8 @@ const Header = () => {
                         <Link to='/search'><FaSearch /></Link>
                         <Link to='' onClick={() => set_show_profile((!show_profile))}><FaUser /></Link>
                         <div className='profile' style={show_profile ? { visibility: 'visible', opacity: '1', top: '50px', zIndex: '2' } : {}}>
-                            <h4>Username: {data.username}</h4>
-                            <h4>Email: {data.email}</h4>
+                            <h4>Username: {result?.result.username}</h4>
+                            <h4>Email: {result?.result.email}</h4>
                         </div>
                         <Link to='/cart'><FaShoppingCart /></Link>
                         <Link to='/cart'>({carts.length})</Link>

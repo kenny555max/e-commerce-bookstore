@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'https://e-commerce-bookstore-tau.vercel.app'
+    baseURL: 'http://localhost:5000'
 });
 
 API.interceptors.request.use((request) => {
     if (localStorage.getItem('result')) {
-        request.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('result'))?.token}`;
+        request.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('result'))?.result.accessToken}`;
     }
 
     return request;
@@ -27,3 +27,6 @@ export const update_item_from_cart = (id, update_data) => API.put(`/cart/update_
 
 export const place_order = (order_data) => API.post('/order/place_order', order_data);
 export const get_order = () => API.get('/order/get_order');
+
+export const create_checkout_session = () => API.post('/checkout/create_checkout_session');
+export const verify_payment_status = (payment_status) => API.put(`/checkout/verify_payment_status?payment_status=${payment_status}`);

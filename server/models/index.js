@@ -10,7 +10,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'not verified'
     },
-    token: String
+    accessToken: {
+        type: String,
+        default: ''
+    }
 });
 
 const UserModel = mongoose.model('bookstoreUser', userSchema);

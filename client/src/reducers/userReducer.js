@@ -14,7 +14,7 @@ export const userSlice = createSlice({
         },
         register_status: (state, action) => {
             localStorage.setItem('result', JSON.stringify(action.payload));
-            return { ...state, user: action.payload.data, message: action.payload.msg };
+            return { ...state, user: action.payload.result, message: action.payload.msg };
         },
         login: (state, action) => {
             localStorage.setItem('result', JSON.stringify(action.payload));

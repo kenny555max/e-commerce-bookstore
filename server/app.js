@@ -8,6 +8,7 @@ import products from './routes/product.js';
 import cartRoute from './routes/cart.js';
 import dotenv from 'dotenv';
 import orderRoute from './routes/order.js';
+import checkoutRoute from './routes/checkout.js';
 
 const app = express();
 dotenv.config();
@@ -33,6 +34,7 @@ app.use('/users', routes);
 app.use('/products', products);
 app.use('/cart', cartRoute);
 app.use('/order', orderRoute);
+app.use('/checkout', checkoutRoute);
 
 const CONNECTION_URI = process.env.CONNECTION_URI;
 

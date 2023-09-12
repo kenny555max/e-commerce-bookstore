@@ -9,7 +9,7 @@ const App = () => {
   const [userDataAvailable, setUserDataAvailable] = useState(false);
   const [loading, setLoading] = useState(true);
 
- useEffect(() => {
+  useEffect(() => {
     const userData = localStorage.getItem('result');
     if (userData) {
       setUserDataAvailable(true);
