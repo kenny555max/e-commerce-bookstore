@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'http://localhost:5000'
+    baseURL: 'https://e-commerce-bookstore-theta.vercel.app/'
 });
 
 API.interceptors.request.use((request) => {
