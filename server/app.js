@@ -18,6 +18,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(cors());
 
+app.get('/', (req, res) => {
+    res.send('hello world');
+})
+
 const add_products = async () => {
     try {
         const products = await Product_model.insertMany(data);
