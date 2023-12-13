@@ -26,7 +26,7 @@ export const signup = async (req, res) => {
        
         const encodedToken = btoa(accessToken); // Encode the token using btoa
         
-        const verificationUrl = `https://e-commerce-bookstore-kenny.vercel.app/email_verification/${encodedToken}`;
+        const verificationUrl = `https://e-commerce-bookstore-uqgv.vercel.app/email_verification/${encodedToken}`;
 
         // Create a Nodemailer transporter
         const transporter = nodemailer.createTransport({
