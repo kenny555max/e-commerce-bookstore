@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'https://e-commerce-bookstore-theta.vercel.app/'
+    baseURL: 'https://e-commerce-bookstore-murex.vercel.app'
 });
 
 API.interceptors.request.use((request) => {
