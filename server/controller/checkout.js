@@ -36,8 +36,8 @@ export const create_checkout_session = async (req, res) => {
             payment_method_types: ['card'],
             line_items,
             mode: 'payment',
-            success_url: 'https://e-commerce-bookstore-kenny.vercel.app/orders?payment_status=success', // Redirect URL after successful payment
-            cancel_url: 'https://e-commerce-bookstore-kenny.vercel.app/orders?payment_status=failed',   // Redirect URL after canceled payment
+            success_url: 'https://e-commerce-bookstore-uqgv.vercel.app/orders?payment_status=success', // Redirect URL after successful payment
+            cancel_url: 'https://e-commerce-bookstore-uqgv.vercel.app/orders?payment_status=failed',   // Redirect URL after canceled payment
         });
 
         res.status(200).json({ url: session.url });
@@ -57,7 +57,7 @@ export const verify_payment_status = async (req, res) => {
 
         //const token = jwt.sign({ id: result._id, email: result.email }, process.env.SECRET, { expiresIn: '1h' });
         //const encodedToken = btoa(token); // Encode the token using btoa
-        const verificationUrl = `https://e-commerce-bookstore-kenny.vercel.app/payment_confirmation_email`;
+        const verificationUrl = `https://e-commerce-bookstore-uqgv.vercel.app/payment_confirmation_email`;
 
         // Create a Nodemailer transporter
         const transporter = nodemailer.createTransport({
