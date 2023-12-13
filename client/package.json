@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "https://e-commerce-bookstore-theta.vercel.app/",
+  "proxy": "https://e-commerce-bookstore-murex.vercel.app",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
