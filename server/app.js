@@ -17,7 +17,7 @@ dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(cors({
-    origin: 'https://e-commerce-bookstore-kenny-lylp2f6fv-kenny555max.vercel.app'
+    origin: 'http://localhost:3000'
 }));
 
 app.get('/', (req, res) => {
