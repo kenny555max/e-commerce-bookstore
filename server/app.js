@@ -17,7 +17,7 @@ dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ extended: true }));
 app.use(cors({
-    origin: 'http://localhost:3000'
+    origin: 'https://e-commerce-bookstore-uqgv.vercel.app'
 }));
 
 app.get('/', (req, res) => {
